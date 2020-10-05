@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'Bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesom/css/all.css' %}">
+</head>
+<body>
+    <style>
+    body{background-color: rgb(22,32,42); }
+    .header{ height: 3.5rem; font-size: 14px; width: auto;
+        border-bottom-width:2px; border-bottom-style: solid; border-bottom-color: rgba(248, 246, 246, 0.05);}
+    .box1{background-color:rgb(32,42,52); height: 7rem; border-radius: 12px; width: 100%;}
+
+    </style>
+    <script src="../JS/Jquery.js"></script>
+    <script src="../JS/popper.js"></script>
+    <script src="{% static 'Bootstrap/js/bootstrap.min.js' %}"></script>
+    <div class="header row container-fluid align-items-center  ">
+        <div class="col-3 text-center"><a href="#" style="color: rgb(113,121,132);">Home</a></div>
+        <div class="col-3 offset-6 text-center"><a href="#" style="color:rgb(113,121,132);">Creat a Tweet</a>&nbsp;&nbsp;&nbsp;<a href="#" style="color: rgb(113,121,132);">Settings</a>&nbsp;&nbsp;&nbsp;<a href="#" style="color:rgb(113,121,132);">Logout</a></div>
+    </div>
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="leftbar row col-3 mt-3 " style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
+                <i class="fab fa-twitter mt-2 ml-3" style="color: rgb(0, 132, 255); font-size: 54px;"></i>
+                <div class="mt-1 ml-1" style="font-size: 32px; color: rgb(113,121,132);">ReadyTweet</div>
+                <div class="w-100"></div>
+                <div class="box1 align-content-start row col-11 ml-3" style="border-radius: 1rem; height: 22rem; background-color:rgb(45,55,65)">
+                    <div class="h4 mt-2" style="font-weight: bold; color:white">Profile</div>
+                    <div class="w-100"></div>
+                    <i class="fas fa-user-circle mt-4" style="color: white; font-size: 76px;"></i>
+                    <div class="align-self-center ml-2 mt-4" style="font-size: 22px; color:white">Admin</div>
+                    <div class="w-100"></div>
+                    <div class="mt-5 ml-1" style="color:rgb(113,121,132) ;">Followers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Following</div>
+                    <div class="w-100"></div>
+                    <div class=" ml-1" style="color:white ; margin-top:-8px; font-size: 2rem; font-weight: bold;">2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</div>
+                    <div class="w-100"></div>
+                    <div class="mx-auto mt-4"><input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></div>               
+            </div>
+        </div>
+            <div class="mainbar col-6 mt-3 row justify-content-between align-items-start"  style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
+                <div class="align-self-start ml-4" style="font-weight: bold; color: white; font-size: 22px;">Tweets</div>
+                <div class="" style="color: white; font-size: 16px;">1-3 of 4</div>
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-2 " src="{% static 'users/1.png' %}" height="20" width="20"  alt="...">&nbsp;
+                        <div class="mt-1 " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="{% static 'users/banking-office-hour-512.png' %}" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 ml-2" style="color:rgb(144,155,159);">WELCOME EVERYONE</div>
+            
+                    <div class="d-flex mt-3 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 0 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>                  
+
+
+
+
+                </div>
+
+
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-2 " src="{% static 'users/2.png' %}" height="20" width="20"  alt="...">&nbsp;
+                        <div class="mt-1 " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="{% static 'users/banking-office-hour-512.png' %}" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 ml-2" style=" font-size:12px; color:rgb(144,155,159);">Hello everyone I hope you like this twitter clone because I made it with LOVE.Go check out my GitHub to find open source code of this platform.</div>
+            
+                    <div class="d-flex mt-2 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 1 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>
+
+
+
+
+                </div> 
+
+                
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-2 " src="{% static 'users/3.png' %}" height="20" width="20"  alt="...">&nbsp;
+                        <div class="mt-1 " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="{% static 'users/banking-office-hour-512.png' %}" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-1 ml-2" style=" font-size:12px; color:rgb(144,155,159);">Hello.Please make sure to subscribe to my youtube channel--"Ready Dev"!</div>
+                    <div class="d-flex mt-3 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 0 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>
+                    </div>
+
+
+
+
+                    
+                <div class="w-100"></div>
+                <div class="d-flex justify-content-center" style="width: 100%;">
+                    <div><input type="button" value="1" style="background-color: rgb(60,69,100);border-radius: 3px;border: 1px solid white;color: white"></div>  
+                    <div class="ml-2"><input type="button" value="2" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div> 
+                    <div class="ml-2"><input type="button" value="Next" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div>
+                    <div class="ml-2"><input type="button" value="Last" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div> 
+                </div>
+                </div>
+                <div class="rightbar row d-flex col-3 ml-3" style=" height:30rem;">
+                    <div><input class=" mt-3" type="text" style="background-color: rgb(37,51,64); border-top-left-radius: 17px; border-bottom-left-radius: 17px;  height: 40px;  width: 16rem; border: none;" placeholder="      Search Twitter"></div>
+                    <div><i class="fa fa-search mt-3" style="color: white;font-size: 24px; background-color: rgb(37,51,64); height: 40px; border-top-right-radius: 17px; border-bottom-right-radius: 17px; width: 3rem; padding: 7px;"></i></div>
+                    <div class="w-100"></div>
+                    <div style="color: white;"><h2>Trends</h2></div>
+                    <div class="box12 d-flex align-content-end flex-column" style="width: 98%; border-radius: 15px; height: 16rem; background-color: rgb(45,55,65);">
+                        <div class="box22 d-flex align-self-center" style="height: 3rem; width: 90%; border-bottom: 2px solid  rgba(248, 246, 246, 0.05) "><div class="align-self-center" style="color:rgb(144,155,159); font-size:24px">Who to follow</div></div>
+                        <div class="box22 d-flex justify-content-start align-self-center align-content-start" style="height: 3rem; width: 90%; border-bottom: 2px solid  rgba(248, 246, 246, 0.05) "><img class="align-self-center" src="{% static 'users/1.png' %}" width="20" height="20"><div class="align-self-center" style="color:white; font-size:16px">&nbsp;Admin</div></div>
+                        <div class="box22 d-flex align-self-center justify-content-around flex-column " style="height: 4rem; width: 90%; border-bottom: 2px solid  rgba(248, 246, 246, 0.05) "><div class=" d-flex mt-2 align-self-start"><img src="{% static 'users/2.png'%}" width="20" height="20"><div style="color:white; font-size:16px">&nbsp;David</div></div><div class="align-self-start" style="color: rgb(113,121,132);">david@gmail.com</div></div>
+                        <div class="box22 d-flex align-self-center justify-content-around flex-column " style="height: 4rem; width: 90%; rgba(248, 246, 246, 0.05) "><div class=" d-flex mt-2 align-self-start"><img src="{% static 'users/3.png' %}" width="20" height="20"><div style="color:white; font-size:16px">&nbsp;David</div></div><div class="align-self-start" style="color: rgb(113,121,132);">david@gmail.com</div></div>
+                </div>
+                <div><p style="color: white;font-size: 16px">Terms, Privacy policy, Cookies, Ads, info, More <span style="color:rgb(128,137,146)">@2020 twitter, inc</span></p></div>
+               
+                </div>
+            </div>       
+    </div>
+
+
+</body>
+</html>
