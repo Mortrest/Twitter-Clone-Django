@@ -1,13 +1,40 @@
 from django.shortcuts import render
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
+from django.core.paginator import Paginator
 from .models import *
 import re
 
 
 #homePage View
 def homePage(request):
-    context = {}
+    profile = Profile.objects.get(id=request.user.id)
+    post = profile.post_set.order_by('-dateCreated')[:1000]
+    paginator = Paginator(post,3)
+    page_number = request.GET.get('page')
+    post = paginator.get_page(page_number)
+
+    context = {
+        'profile':profile,
+        'post':post,
+    }
     return render(request,'accounts/index.html',context)
+
+
+
+def profilePage(request, pk):
+    profile = Profile.objects.get(id=pk)
+    user1 = Profile.objects.get(id=request.user.id)
+    pattern = re.compile('[A-Za-z0-9]+@')
+    followList = pattern.findall(user1.followList)
+    followList = [i.rstrip('@') for i in followList]
+
+    context = {
+        'profile':profile,
+        'followList':followList
+    }
+    return render(request,'accounts/profilePage.html',context)
+
+
 
 
 #Tweet Function (UnTest)
@@ -36,9 +63,9 @@ def addTweet(request):
 #Follow Function (UnTest)
 def followFunction(request, pk):
     target = Profile.objects.get(id=pk)
-    user = Profile.objects.get(id=request.user.id)
+    user1 = Profile.objects.get(id=request.user.id)
     pattern = re.compile('[A-Za-z0-9]+@')
-    followList = pattern.findall(user.followList)
+    followList = pattern.findall(user1.followList)
     followList = [i.rstrip('@') for i in followList]
     try:
         q = 1
@@ -48,27 +75,40 @@ def followFunction(request, pk):
         if target.username in followList:
             followList.remove(target.username)
             followList = '@'.join(followList)
-            followList = followList + '@'   
-            user.followList = followList
-            user.followings -= 1
-            user.save()        
+            followList = followList + '@' 
+            # d = target.post_set.all()
+            # for i in d:
+            #     user1.delete()  
+            user1.followList = followList
+            d = target.post_set.all()
+            for i in d:
+                i.user.remove(user1)  
+
+
+            user1.followings -= 1
+            user1.save()        
             target.followers -= 1
             target.save()
         else:
             followList.append(target.username)
             followList = '@'.join(followList)
-            followList = followList + '@'   
-            user.followList = followList
-            user.followings += 1
-            user.save()        
+            followList = followList + '@' 
+            d = target.post_set.all()
+            for i in d:
+                i.user.add(user1)  
+
+
+            user1.followList = followList
+            user1.followings += 1
+            user1.save()        
             target.followers += 1
             target.save()
 
-        return redirect('home')
+        return redirect('profile',pk=pk)
 
 
 
-#Like Function (UnTest)
+#Like Function 
 def likeFunction(request, pk):
     post = Post.objects.get(id=pk)
     user = Profile.objects.get(id=request.user.id)
@@ -87,7 +127,7 @@ def likeFunction(request, pk):
             likeList = likeList + 'x'   
             user.likeList = likeList
             user.save()        
-            post.likes -= 1
+            post.likesCount -= 1
             post.save()
         else:
             likeList.append(str(pk))
@@ -95,7 +135,40 @@ def likeFunction(request, pk):
             likeList = likeList + 'x'   
             user.likeList = likeList
             user.save()
-            post.likes += 1
+            post.likesCount += 1
             post.save()
 
         return redirect('home')
+
+
+#Like Function (UnTest)
+def likeFunctionFollow(request, pk):
+    post = Post.objects.get(id=pk)
+    user = Profile.objects.get(id=request.user.id)
+    pattern = re.compile('[0-9]+x')
+    likeList = pattern.findall(user.likeList)
+    likeList = [i.rstrip('x') for i in likeList]
+    try:
+        z = 0
+    #Ok she inja
+    except:
+        w = 0
+    else:
+        if str(pk) in likeList:
+            likeList.remove(str(pk))
+            likeList = 'x'.join(likeList)
+            likeList = likeList + 'x'   
+            user.likeList = likeList
+            user.save()        
+            post.likesCount -= 1
+            post.save()
+        else:
+            likeList.append(str(pk))
+            likeList = 'x'.join(likeList)
+            likeList = likeList + 'x'   
+            user.likeList = likeList
+            user.save()
+            post.likesCount += 1
+            post.save()
+
+        return redirect('profile', kwargs=pk)

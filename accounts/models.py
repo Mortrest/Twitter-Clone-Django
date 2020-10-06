@@ -25,7 +25,7 @@ class Profile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
 
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(username=instance)
         print('Profile created!')
 
 
@@ -41,8 +41,6 @@ class Post(models.Model):
     user = models.ManyToManyField(Profile)
 
     #Inja bayad behtar she
-    def __str__(self):
-        return self.author
 
 
 class Comment(models.Model):

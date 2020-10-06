@@ -29,7 +29,7 @@
             <div class="leftbar row col-3 mt-1 " style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
                 <i class="fab fa-twitter mt-2 ml-3" style="color: rgb(0, 132, 255); font-size: 54px;"></i>
                 <div class="mt-2 ml-3" style="font-size: 32px; color: rgb(113,121,132);">
-                   <a href="{% url 'home' %}" style="text-decoration: none;color: white;"> Twitter</a></div>
+                    <a href="{% url 'home' %}" style="text-decoration: none;color: white;"> Twitter</a></div>
                 <div class="w-100"></div>
                 <div class="box1 align-content-start row col-11 ml-3" style="border-radius: 1rem; height: 22rem; background-color:rgb(45,55,65)">
                     <div class="h4 mt-2" style="font-weight: bold; color:white">Profile</div>
@@ -41,8 +41,17 @@
                     <div class="w-100"></div>
                     <div class=" ml-4" style="color:white ; margin-top:-8px; font-size: 2rem; font-weight: bold;">{{ profile.followers }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ profile.followings }}</div>
                     <div class="w-100"></div>
+                    {% if profile.id == request.user.id %}
+
+                    {% elif profile.username in followList %}
                     <div class="mx-auto mt-4">
-                        <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></div>               
+                        <a href="{% url 'follow' profile.id %}">
+                        <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Unfollow"></div></a>
+                    {% else %}
+                    <div class="mx-auto mt-4">
+                        <a href="{% url 'follow' profile.id %}">
+                        <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Follow"></div></a>                    
+                    {% endif %}              
             </div>
         </div>
             <div class="mainbar col-6 mt-3 row justify-content-between align-items-start"  style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
@@ -51,7 +60,7 @@
 
 
 
-                {% for i in post %}
+                {% for i in profile.post_set.all %}
 
                     <div class="w-100"></div>
                     <div class="box1 ml-4 justify-content-center">
@@ -81,7 +90,7 @@
 
 
 
-                                <a  href="{% url 'like' i.id %}" style="text-decoration: none;">
+                                <a  href="{% url 'likeF' i.id %}" style="text-decoration: none;">
                                     {% if i.likesCount == 1 %}
                                         <i class="fa fa-heart ml-2 " style="color: indianred; font-size: 14px;"></i>
                                     {% else %}
@@ -90,7 +99,7 @@
                                     <p style="color:rgb(112, 128, 150); font-size: 14px; text-decoration: none;" class="d-inline" > {{i.likesCount}} like(s)</p>    
                                 </a> 
 
-                            <form id="likebutton" method="POST" action="{% url 'like' i.id %}">
+                            <form id="likebutton" method="POST" action="{% url 'likeF' i.id %}">
                             {% csrf_token %}
                             <input type="hidden">
                             </form>
@@ -100,7 +109,7 @@
 
                             <a href="" style=" color:rgb(113,121,132); text-decoration: none;">
                                 <i style=" font-size: 14px;" class="far fa-comment ml-3" ></i> 
-                                <p style="color:rgb(112, 128, 150); font-size: 14px;" class="d-inline" > {{ i.commentsCount }} Comment(s)</p>
+                                <p style="color:rgb(112, 128, 150); font-size: 14px;" class="d-inline" > {{ i.commensCount }} Comment(s)</p>
 
                             </a>
                             
@@ -123,26 +132,10 @@
                     
                 <div class="w-100"></div>
                 <div class="d-flex justify-content-center" style="width: 100%;">
-                    {% if post.has_previous %}
-                        <div class="ml-2">
-                            <a href="{% url 'home' %}?page={{ post.previous_page_number }}">
-                            <input type="button" value="Previous" style="background: none;border-radius: 3px; border: 1px solid rgb(113,121,132);color: rgb(112, 128, 150)"></a></div>
-                    {% endif %}
-
-                        {% for i in post.num_pages %}
-                            <h1>f</h1>
-                            <div class="ml-2">
-                                <input type="button" value="{{ i }}" style="background-color: rgb(60,69,100);border-radius: 3px;border: 1px solid rgb(113,121,132);color: rgb(112, 128, 150)"></div>  
-                        {% endfor %}
-
-                    {% if post.has_next %} 
-                        <div class="ml-2">
-                            <a href="{% url 'home' %}?page={{ post.next_page_number }}">
-                            <input type="button" value="Next" style="background: none;border-radius: 3px; border: 1px solid rgb(113,121,132);color: rgb(112, 128, 150)"></a></div>
-                    {% endif %}
- 
-
-
+                    <div><input type="button" value="1" style="background-color: rgb(60,69,100);border-radius: 3px;border: 1px solid white;color: white"></div>  
+                    <div class="ml-2"><input type="button" value="2" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div> 
+                    <div class="ml-2"><input type="button" value="Next" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div>
+                    <div class="ml-2"><input type="button" value="Last" style="background: none;border-radius: 3px; border: 1px solid white;color: white"></div> 
                 </div>
                 </div>
                 <div class="rightbar row d-flex col-3 ml-3" style=" height:30rem;">
