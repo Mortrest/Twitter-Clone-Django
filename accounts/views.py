@@ -12,10 +12,14 @@ def homePage(request):
     paginator = Paginator(post,3)
     page_number = request.GET.get('page')
     post = paginator.get_page(page_number)
+    num_pages = paginator.num_pages 
 
     context = {
         'profile':profile,
         'post':post,
+        'n':range(1,paginator.num_pages+1),
+        'num_pages': num_pages,
+        'page_number': page_number,
     }
     return render(request,'accounts/index.html',context)
 
