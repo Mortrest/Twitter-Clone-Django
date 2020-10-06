@@ -53,9 +53,5 @@ class Comment(models.Model):
     class Meta:
         ordering = ['-datePublished']
 
-    def __str__(self):
-        return self.author    
-
-
 
 
