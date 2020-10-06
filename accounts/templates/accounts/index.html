@@ -38,12 +38,16 @@
                     <div class="align-self-center ml-2 mt-3" style="font-weight: 600; font-size: 26px; color:rgba(255, 255, 255, 0.87)">@{{profile.username}}</div>
                     <div class="w-100"></div>
                     <div class="mt-3 ml-1" style="color:rgb(216, 218, 221) ;font-size: 16px;font-weight: 600;">{{ profile.bio }} </div>
+
+                    <div>
                     <div class="mt-5 ml-1" style="color:rgb(113,121,132) ;">Followers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Following</div>
                     <div class="w-100"></div>
                     <div class=" ml-4" style="color:white ; margin-top:-8px; font-size: 2rem; font-weight: bold;">{{ profile.followers }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ profile.followings }}</div>
+                </div>
                     <div class="w-100"></div>
                     <div class="mx-auto mt-4">
-                        <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></div>               
+                        <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></div>  
+                                     
             </div>
         </div>
             <div class="mainbar col-6 mt-3 row justify-content-between align-items-start"  style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
@@ -56,6 +60,27 @@
                 {% endif %}
 
 
+
+
+                
+                {% if not profile.post_set.all.exists %}
+
+
+                <div class="w-100 h-100 mt-4 mr-4" >
+                <div class="w-100" ></div>
+                <div class="box1 ml-4 justify-content-center mt-4" style="background-color: rgb(22, 32, 42);">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem;">
+                        <div class="d-flex"
+                        >
+                        <div class="ml-1 mt-1" style="color: white;" >
+                            <h2 class="">No Tweets...</h2>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+                {% endif %}
                 {% for i in post %}
 
                     <div class="w-100"></div>
@@ -87,7 +112,7 @@
 
 
                                 <a  href="{% url 'like' i.id %}" style="text-decoration: none;">
-                                    {% if i.likesCount == 1 %}
+                                    {% if i.id in likeList %}
                                         <i class="fa fa-heart ml-2 " style="color: indianred; font-size: 14px;"></i>
                                     {% else %}
                                         <i class="fa fa-heart ml-2 " style= "color:rgb(63, 69, 95);font-size: 14px; text-decoration: none;"></i>
@@ -124,7 +149,7 @@
 
 
 
-
+                {% if profile.post_set.all.exists %}
                     
                 <div class="w-100"></div>
                 <div class="d-flex justify-content-center" style="width: 100%;">
@@ -151,11 +176,13 @@
                             <a href="{% url 'home' %}?page={{ post.next_page_number }}">
                             <input type="button" value="Next" style="background: none;border-radius: 3px; border: 1px solid rgb(113,121,132);color: rgb(112, 128, 150)"></a></div>
                     {% endif %}
- 
+
 
 
                 </div>
                 </div>
+                {% endif %}
+
                 <div class="rightbar row d-flex col-3 ml-3" style=" height:30rem;">
                     <div>
                         <input class=" mt-3" type="text" style="background-color: rgb(37,51,64); border-top-left-radius: 17px; border-bottom-left-radius: 17px;  height: 40px;  width: 16rem; border: none;" placeholder="  Search Twitter"></div>

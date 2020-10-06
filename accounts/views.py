@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from django.shortcuts import render,redirect,HttpResponse
 from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect
 from .models import *
 import re
 
 
 #homePage View
+
+
+
 def homePage(request):
     profile = Profile.objects.get(id=request.user.id)
     post = profile.post_set.order_by('-dateCreated')[:1000]
@@ -14,12 +18,20 @@ def homePage(request):
     post = paginator.get_page(page_number)
     num_pages = paginator.num_pages 
 
+    user1 = Profile.objects.get(id=request.user.id)
+    pattern = re.compile('[0-9]+x')
+    likeList = pattern.findall(user1.likeList)
+    likeList = [i.rstrip('x') for i in likeList]
+    d = []
+    for i in range(len(likeList)):
+        d.append(int(likeList[i]))
     context = {
         'profile':profile,
         'post':post,
         'n':range(1,paginator.num_pages+1),
         'num_pages': num_pages,
         'page_number': page_number,
+        'likeList':d
     }
     return render(request,'accounts/index.html',context)
 
@@ -141,8 +153,7 @@ def likeFunction(request, pk):
             user.save()
             post.likesCount += 1
             post.save()
-
-        return redirect('home')
+        return redirect(request.META['HTTP_REFERER'])
 
 
 #Like Function (UnTest)
@@ -174,5 +185,4 @@ def likeFunctionFollow(request, pk):
             user.save()
             post.likesCount += 1
             post.save()
-
-        return redirect('profile', kwargs=pk)
+        return redirect(request.META['HTTP_REFERER'])
