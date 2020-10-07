@@ -33,7 +33,7 @@ def create_profile(sender, instance, created, **kwargs):
 
 # Each Post Model
 class Post(models.Model):
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, related_name='author')
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, related_name='did')
     body = models.TextField(null=True)
     likesCount = models.IntegerField(default=0)
     commentsCount = models.IntegerField(default=0)

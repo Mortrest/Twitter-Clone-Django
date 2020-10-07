@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,7 +51,8 @@
                             <a href="{% url 'profile' post.author.id %}" style="text-decoration: none; color: rgb(216, 205, 186); font-size: 16px;font-family:inherit;font-weight: 600;" >{{ post.author }}</a></div></div>
                         <div class="d-flex">
                             <img class="align-self-center mr-2" style="color: white;" src="{% static 'users/banking-office-hour-512.png' %}" height="10" width="10"  alt="...">
-                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                            <a href="{% url 'deleteTweetDetail' post.id %}">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i></a>
                         </div>
                     </div>
                     <div class="mt-2 ml-2" style="color:rgb(216, 218, 221);font-weight: 600;">{{ post.body }}</div>
@@ -69,9 +72,10 @@
                     <div class="d-flex"
                     ><img class=" mt-2 " src="{% static 'users/2.png' %}" height="20" width="20"  alt="...">&nbsp;
                     <div class="mt-1 " style="color: white;" >
-                        <a href="{% url 'profile' i.author.id %}" style="text-decoration: none; color: rgb(216, 205, 186); font-size: 16px;font-family:inherit;font-weight: 600;" >{{ i.author }}</a></div></div>
+                        <a href="" style="text-decoration: none; color: rgb(216, 205, 186); font-size: 16px;font-family:inherit;font-weight: 600;" >{{ i.author }}</a></div></div>
                     <div class="d-flex">
-                        <i class="far fa-window-close align-self-center " style=" font-size:12px; color: grey;"></i>
+                        <a href="{% url 'deleteComment' post.id i.id %}">
+                        <i class="far fa-window-close align-self-center " style=" font-size:12px; color: grey;"></i></a>
                     </div>
                 </div>
                 <div class="mt-2 ml-2" style="color:rgb(216, 218, 221);font-weight: 600;">{{ i.body }}</div>
@@ -84,9 +88,19 @@
 
     </div>
     <div class="col-4">
-        <div class="mt-2" style="color: rgb(113,121,132);"></div>
-        <div ><input type="textarea" class="mt-1" style="width: 100%; height: 13rem; background-color: rgb(54,63,94); border: 1px soli rgb(144,155,159); border-right: 1px soli rgb(144,155,159); border-bottom: 1px soli rgb(144,155,159);border-radius: 20px;"></div>
-        <input class="mt-4" type="submit" style=" font-size:14px; font-weight:bold; border-radius: 40px; height: 2.5rem; width: 60%; background-color: rgb(29,161,243);color: white;border: none" value="Sumbit comment">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group" >
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}
+
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-primary" type="submit">Submit comment</button>
+            </form>
+
+            </div>
     </div>
  </div>
  <div class="row">

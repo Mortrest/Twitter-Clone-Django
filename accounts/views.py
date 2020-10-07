@@ -84,14 +84,93 @@ def logoutUser(request):
 	logout(request)
 	return redirect('login')		
 
-
+@login_required(login_url='login')
 def detailView(request, pk):
 	post = Post.objects.get(id=pk)
+	user = Profile.objects.get(id=request.user.id)
+	form = CommentForm()
+	if request.method == 'POST':
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			a = form.cleaned_data.get('body')
+			q = post.comment_set.create(body=a)
+			q.author = user
+			q.save()
 	context = {
 		'post':post,
-		
+		'form':form,
+
 	}
 	return render(request, 'accounts/detailPage.html', context)
+
+
+@login_required(login_url='login')
+def deleteComment(request, pk1, pk2):
+	post = Post.objects.get(id=pk1)
+	try:
+		z = 0
+	except:
+		w = 0
+	else:
+		q = post.comment_set.get(id=pk2)
+		q.delete()
+	return redirect('detail', pk=post.pk)
+
+
+@login_required(login_url='login')
+def deleteTweet(request, pk):
+	post = Post.objects.get(id=pk)
+	user1 = Profile.objects.get(id=request.user.id)
+	try:
+		z = 0
+	except:
+		w = 0
+	else:
+		if post.author == user1:
+			post.delete()
+		else:
+			post.user.remove(user1)
+		return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required(login_url='login')
+def deleteTweetDetail(request, pk):
+	post = Post.objects.get(id=pk)
+	user1 = Profile.objects.get(id=request.user.id)
+	pattern = re.compile('[A-Za-z0-9]+@')
+	followList = pattern.findall(user1.followList)
+	followList = [i.rstrip('@') for i in followList]
+
+	try:
+		z = 0
+	except:
+		w = 0
+	else:
+		if post.author == user1:
+			post.delete()
+		else:
+			post.user.remove(user1)
+		return redirect('home')
+		
+
+
+@login_required(login_url='login')
+def followingList(request, pk):
+	user = Profile.objects.get(id=request.user.id)
+	pattern = re.compile('[A-Za-z0-9]+@')
+	followList = pattern.findall(user.followList)
+	followList = [i.rstrip('@') for i in followList]
+	user = Profile.objects.get(id=request.user.id)
+	profile = Profile.objects.get(id=request.user.id)
+	post = profile.post_set.order_by('-dateCreated')[:1000]
+
+	context = { 
+		'profile':profile,
+		'post':post,
+	}
+	return render(request, 'accounts/followerList1.html',context)
+
+
 
 
 
@@ -128,25 +207,40 @@ def profilePage(request, pk):
 	return render(request,'accounts/profilePage.html',context)
 
 
+def tweetPage(request):
+	user = Profile.objects.get(id=request.user.id)
+	form = TweetForm()
+	context = {
+		'user':user,
+		'form':form,
+	}
+	return render(request, 'accounts/tweet.html',context)
+
 
 @login_required(login_url='login')
 #Tweet Function (UnTest)
 def addTweet(request):
+	user1 = Profile.objects.get(id=request.user.id)
+
 	form = TweetForm()
 	if request.method == 'POST':
 		form = TweetForm(request.POST)
 		if form.is_valid():
-			a = body=form.cleaned_data.get('body')
+			a = form.cleaned_data.get('body')
 			q = Post.objects.create(body=a)
-			q.author = request.user
-			q.user.add(request.user)
-			user = Profile.objects.get(id=request.user.id)
+			q.author = user1
+			q.user.add(user1)
+			q.save()
 			pattern = re.compile('[A-Za-z0-9]+@')
-			followList = pattern.findall(user.followList)
+			followList = pattern.findall(user1.followList)
 			followList = [i.rstrip('@') for i in followList]
+			print(followList)
+
 			for i in followList:
-				q.user.add(username=i)
-				q.save()
+				if i != '0':
+					d = Profile.objects.get(username=i)
+					q.user.add(d)
+					q.save()
 
 			return redirect('home')
 		else:

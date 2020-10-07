@@ -3,11 +3,22 @@ from .models import *
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.helper import FormHelper
 
 
 class TweetForm(ModelForm):
+    helper = FormHelper()
+    helper.form_show_labels = False
+
     class Meta:
         model = Post
+        widgets = {
+                'body': forms.Textarea(attrs={
+                'class':'form-control',
+                'style':'background-color:#202a34;border:none;color: rgb(216, 205, 186); font-size: 17px;font-family:inherit;font-weight: 600;height:56px;placeholder:"hello";width:58em;resize:none;',
+                'placeholder':"What's happening?"
+            },)
+        }
         fields = [
             'body'
         ]
@@ -20,3 +31,17 @@ class CreateUserForm(UserCreationForm):
         fields = [
             'username','email', 'password1','password2'
         ]
+
+
+class CommentForm(forms.ModelForm):
+    helper = FormHelper()
+    helper.form_show_labels = False
+    class Meta:
+        model = Comment
+        fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'class':'form-control',
+                'style':'background-color:#202a34;border:none;color: rgb(216, 205, 186); font-size: 18px;font-family:inherit;font-weight: 600;'
+            },)
+        }

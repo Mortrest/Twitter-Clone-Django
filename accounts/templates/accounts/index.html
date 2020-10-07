@@ -2,5 +2,6 @@
 {% block content %}
 <div class="w-100"></div>
 <div class="mx-auto mt-4">
-    <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></div>  
+    <a href="{% url 'tweet' %}">
+    <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></a></div>  
 {% endblock %}
