@@ -14,7 +14,7 @@
     body{background-color: rgb(22,32,42); }
     .header{ height: 3.5rem; font-size: 14px; width: auto;
         border-bottom-width:2px; border-bottom-style: solid; border-bottom-color: rgba(248, 246, 246, 0.05);}
-    .box1{background-color:rgb(32,42,52); height: 7rem; border-radius: 12px; width: 100%;}
+    .box1{background-color:rgb(32,42,52); height: 6.5rem; border-radius: 12px; width: 100%;}
 
     </style>
     <script src="{% static 'JS/Jquery.js' %}"></script>
@@ -48,33 +48,25 @@
                        <div class="w-100"></div>
 
                     <img class=" mt-2 " src="{% static 'users/1.png' %}" height="75" width="75"  alt="...">&nbsp;
-                    <div class="align-self-center ml-2 mt-3" style="font-weight: 600; font-size: 26px; color:rgba(255, 255, 255, 0.87)"><a href="{% url 'profile' profile.username %}" style="text-decoration: none;color: bisque;"> @{{profile.username}}</a></div>
+                    <div class="align-self-center ml-2 mt-3" style="font-weight: 600; font-size: 26px; color:rgba(255, 255, 255, 0.87)"><a href="{% url 'profile' request.user.username %}" style="text-decoration: none;color: bisque;"> @{{profile.username}}</a></div>
                     <div class="w-100"></div>
                     <div class="mt-3 ml-1" style="color:rgb(216, 218, 221) ;font-size: 16px;font-weight: 600;">{{ profile.bio }} </div>
 
 
 
                     <div class="position-static">
-                    <div class="mt-5 ml-1" style="color:rgb(113,121,132) ;"><a href="{% url 'followerList' profile.id %}" style="text-decoration: none;color: rgb(113, 121, 132);"> Followers</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration: none;color: rgb(113, 121, 132);" href="{% url 'followingList' profile.id %}">Following</a></div>
+                    <div class="mt-5 ml-1" style="color:rgb(113,121,132) ;">Followers&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a style="text-decoration: none;color: rgb(113, 121, 132);" href="{% url 'followingList' request.user.id %}">Following</a></div>
                     <div class="w-100"></div>
-                    <div class=" ml-4" style="color:white ; margin-top:-8px; font-size: 2rem; font-weight: bold;">
-                        <a href="{% url 'followerList' profile.id %}" style="text-decoration: none;color: white;">{{ profile.followers }}</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a style="text-decoration: none;color: white;" href="{% url 'followingList' profile.id %}">{{ profile.followings }}</a></div>
+                    <div class=" ml-4" style="color:white ; margin-top:-8px; font-size: 2rem; font-weight: bold;">{{ profile.followers }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a style="text-decoration: none;color: white;" href="{% url 'followingList' request.user.id %}">{{ profile.followings }}</a></div>
                 </div>
-                {% if request.user.id != profile.id %}
-                <div class="w-100"></div>
-                <div class="mx-auto mt-4">
-                    <a href="{% url 'follow' profile.id %}">
-                    <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Follow"></a></div>
-                {% else %}
-                <div class="w-100"></div>
-                <div class="mx-auto mt-4">
-                    <a href="{% url 'home'%}">
-                    <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Home"></a></div>
 
-                {% endif %}
+                <div class="w-100"></div>
+<div class="mx-auto mt-4">
+    <a href="{% url 'tweet' %}">
+    <input style="width: 200px;height: 40px;border-radius: 30px;background-color: rgb(29,163,243);border: none;color: white;font-weight: bold" class="al" type="button" id="input1" value="Tweet"></a></div>  
+
             </div>
-
         </div>
             <div class="mainbar col-6 mt-3 row justify-content-between align-items-start"  style=" height:30rem; border-right: 2px solid rgba(248, 246, 246, 0.05)">
                 <div class="align-self-start ml-4" style="font-weight: bold; color: white; font-size: 22px;">Tweets</div>
@@ -90,24 +82,28 @@
 
                 
                 {% if not profile.post_set.all.exists %}
-
-
-                
-
                 <div class="w-100 h-100 mt-4 mr-4" >
-                    <div class="w-100" ></div>
-                    <div class="box1 ml-4 justify-content-center mt-4" style="background-color: rgb(22, 32, 42);">
-                        <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem;">
-                            <div class="d-flex"
-                            >
-                            <div class="ml-1 mt-1" style="color: white;" >
-                                <h2 class="">No Tweets...</h2>
-                            </div>
-                        </div>
-                        </div>
-                        </div>
-                        </div>
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 1.6rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-1 " src="{% static 'users/1.png' %}" height="15" width="15"  alt="...">&nbsp;
+                        <div class=" mb-1 " style="color: white; font-size: 16px; font-weight: 600;" >{{ profile.username }}</div></div>
                     </div>
+                    <form action="">
+                        {% csrf_token %}
+                        <div class="form-group" >
+                        {% for field in form %}
+                            {{ field }}
+                        {% endfor %}   
+                            <button class="btn btn-sm btn-primary float-right mr-3 mt-1" type="submit">Tweet</button>
+                        </div>  
+                    </form>                
+                </div>
+                </div>
+
+                </div>
+
 
 
 
@@ -115,69 +111,77 @@
                 
 
                 {% endif %}
-                {% for i in post %}
-
-                    <div class="w-100"></div>
-                    <div class="box1 ml-4 justify-content-center align-items-start">
-                        <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 2.4rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
-                            <div class="d-flex"
-                            >
-                            <a href="{% url 'profile' i.author.username %}" style="text-decoration: none;">
-                            <img class=" mt-2 " src="{% static 'users/1.png' %}" height="20" width="20"  alt="...">&nbsp;
-                            </a>
-                            <div class="ml-1 mt-1 " style="color: white;" >
-                                <a href="{% url 'profile' i.author.username %}" style="text-decoration: none; color: rgb(216, 205, 186); font-size: 16px;font-family:inherit;font-weight: 600;" >{{ i.author }}</a></div></div>
-                            <div class="d-flex">
-                            </div>
-                        </div>
-                        <a href="{% url 'detail' i.id %}" style="text-decoration: none;">
-                        <div class="mt-1 ml-2" style="color:rgb(216, 218, 221);font-weight: 600;">{{ i.body }}</div>
-                
-                        </a>
-
-
-<!-- Like&Comment Button -->
-
-                        <div class="d-flex mt-3 justify-content-between align-content-end">
-                            <div class="align-self-end" style="display: flex;">
 
 
 
-                                <a  href="{% url 'like' i.id %}" style="text-decoration: none;">
-                                    {% if i.id in likeList %}
-                                        <i class="fa fa-heart ml-2 " style="color: indianred; font-size: 14px;"></i>
-                                    {% else %}
-                                        <i class="fa fa-heart ml-2 " style= "color:rgb(63, 69, 95);font-size: 14px; text-decoration: none;"></i>
-                                    {% endif %}
-                                    <p style="color:rgb(112, 128, 150); font-size: 14px; text-decoration: none;font-weight: 600;" class="d-inline" > {{i.likesCount}} Likes</p>    
-                                </a> 
-
-                            <form id="likebutton" method="POST" action="{% url 'like' i.id %}">
-                            {% csrf_token %}
-                            <input type="hidden">
-                            </form>
-                                
-                                
-
-
-                            <a href="{% url 'detail' i.id %}" style=" color:rgb(113,121,132); text-decoration: none;">
-                                <i style=" font-size: 14px;" class="far fa-comment ml-3" ></i> 
-                                <p style="color:rgb(112, 128, 150); font-size: 14px;font-weight: 600;" class="d-inline" > {{ i.comment_set.all.count }} Comments</p>
-
-                            </a>
-                            
-
-
-                        </div>
-                            <div class="mr-2" style="color:rgb(113,121,132);font-size: 14px;font-weight: 600;">{{i.dateCreated}}</div>
-                        </div>                  
-
-
-
-
+  
+    
+    
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 1.6rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-1 " src="users/1.png" height="15" width="15"  alt="...">&nbsp;
+                        <div class=" mt- " style="color: white; font-size: 14px; font-weight: bold;" >admin</div></div>
                     </div>
-
-                {% endfor %}
+                    <div class="mt-1 ml-2 align-self-center" style="position: relative; top:4px; color:rgb(144,155,159);">WELCOME EVERYONE</div>
+            
+                    <div class="d-flex mb-4 mr-2  justify-content-end align-content-end">
+                        <div class="mb-2"><button class="btn btn-sm btn-primary" style="margin-bottom:-10px;" type="submit">Tweet</button></div></div>                  
+                </div>
+                <br>
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 1.9rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-1 " src="users/1.png" height="20" width="20"  alt="...">&nbsp;
+                        <div class=" mt- " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="users/banking-office-hour-512.png" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 ml-2" style="color:rgb(144,155,159);">WELCOME EVERYONE</div>
+            
+                    <div class="d-flex mt-2 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 0 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>                  
+                </div>
+                
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 1.9rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-1 " src="users/1.png" height="20" width="20"  alt="...">&nbsp;
+                        <div class=" mt- " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="users/banking-office-hour-512.png" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 ml-2" style="color:rgb(144,155,159);">WELCOME EVERYONE</div>
+            
+                    <div class="d-flex mt-2 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 0 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>                  
+                </div>
+                <div class="w-100"></div>
+                <div class="box1 ml-4 justify-content-center">
+                    <div class="box11 d-flex justify-content-between ml-2 " style="width: 97%; height: 1.9rem; border-bottom: 2px solid rgba(248, 246, 246, 0.05); ">
+                        <div class="d-flex"
+                        ><img class=" mt-1 " src="users/1.png" height="20" width="20"  alt="...">&nbsp;
+                        <div class=" mt- " style="color: white;" >admin</div></div>
+                        <div class="d-flex">
+                            <img class="align-self-center mr-2" style="color: white;" src="users/banking-office-hour-512.png" height="10" width="10"  alt="...">
+                            <i class="far fa-window-close align-self-center" style=" font-size:12px; color: grey;"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2 ml-2" style="color:rgb(144,155,159);">WELCOME EVERYONE</div>
+            
+                    <div class="d-flex mt-2 justify-content-between align-content-end">
+                        <div class="align-self-end">​<i class="fa fa-heart ml-2" style="color: indianred; font-size: 12px;"></i><p style="color:rgb(0, 255, 191); font-size: 12px;" class="d-inline" > 1 like(s)</p><i class="far fa-comment ml-2" style="font-size: 12px; color:rgb(113,121,132)"></i><p style="color:rgb(113,121,132); font-size: 12px;" class="d-inline" > 0 comment(s)</p></div>
+                        <div class="mr-2" style="font-size: 12px; color:rgb(113,121,132)">09:19 Monday,01,06,20</div></div>                  
+                </div>
 
 
 

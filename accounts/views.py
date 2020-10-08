@@ -16,6 +16,7 @@ from .decorators import *
 #homePage View
 def homePage(request):
 	profile = Profile.objects.get(id=request.user.id)
+	profile_last = Profile.objects.order_by('-dateCreated')[:4]
 	post = profile.post_set.order_by('-dateCreated')[:1000]
 	paginator = Paginator(post,3)
 	page_number = request.GET.get('page')
@@ -27,17 +28,50 @@ def homePage(request):
 	likeList = pattern.findall(user1.likeList)
 	likeList = [i.rstrip('x') for i in likeList]
 	d = []
+	form = TweetForm2()
 	for i in range(len(likeList)):
 		d.append(int(likeList[i]))
 	context = {
 		'profile':profile,
+		'profile_last':profile_last,
 		'post':post,
 		'n':range(1,paginator.num_pages+1),
 		'num_pages': num_pages,
 		'page_number': page_number,
-		'likeList':d
+		'likeList':d,
+		'form':form
+
 	}
-	return render(request,'accounts/index.html',context)
+	return render(request,'accounts/base.html',context)
+
+def homeFake(request):
+	profile = Profile.objects.get(id=request.user.id)
+	profile_last = Profile.objects.order_by('-dateCreated')[:4]
+	post = profile.post_set.order_by('-dateCreated')[:2]
+	paginator = Paginator(post,3)
+	page_number = request.GET.get('page')
+	post = paginator.get_page(page_number)
+	form = TweetForm2()
+	num_pages = paginator.num_pages 
+
+	user1 = Profile.objects.get(id=request.user.id)
+	pattern = re.compile('[0-9]+x')
+	likeList = pattern.findall(user1.likeList)
+	likeList = [i.rstrip('x') for i in likeList]
+	d = []
+	for i in range(len(likeList)):
+		d.append(int(likeList[i]))
+	context = {
+		'profile':profile,
+		'profile_last':profile_last,
+		'post':post,
+		'n':range(1,paginator.num_pages+1),
+		'num_pages': num_pages,
+		'page_number': page_number,
+		'likeList':d,
+		'form':form
+	}
+	return render(request,'accounts/landingPage.html',context)
 
 
 
@@ -138,8 +172,8 @@ def deleteTweetDetail(request, pk):
 	post = Post.objects.get(id=pk)
 	user1 = Profile.objects.get(id=request.user.id)
 	pattern = re.compile('[A-Za-z0-9]+@')
-	followList = pattern.findall(user1.followList)
-	followList = [i.rstrip('@') for i in followList]
+	followerList = pattern.findall(user1.followerList)
+	followerList = [i.rstrip('@') for i in followerList]
 
 	try:
 		z = 0
@@ -156,31 +190,62 @@ def deleteTweetDetail(request, pk):
 
 @login_required(login_url='login')
 def followingList(request, pk):
+	target = Profile.objects.get(id=pk)
 	user = Profile.objects.get(id=request.user.id)
 	pattern = re.compile('[A-Za-z0-9]+@')
-	followList = pattern.findall(user.followList)
-	followList = [i.rstrip('@') for i in followList]
+	profile_last = Profile.objects.order_by('-dateCreated')[:4]
+	followingList = pattern.findall(target.followingList)
+	followingList = [i.rstrip('@') for i in followingList]
 	user = Profile.objects.get(id=request.user.id)
 	profile = Profile.objects.get(id=request.user.id)
 	post = profile.post_set.order_by('-dateCreated')[:1000]
-
+	followingList.remove('0')
 	context = { 
 		'profile':profile,
 		'post':post,
+		'list':followingList,
+		'target':target,
+		'profile_last':profile_last
 	}
-	return render(request, 'accounts/followerList1.html',context)
-
+	return render(request, 'accounts/followingList.html',context)
 
 
 
 
 @login_required(login_url='login')
-def profilePage(request, pk):
-	profile = Profile.objects.get(id=pk)
-	user1 = Profile.objects.get(id=request.user.id)
+def followerList(request, pk):
+	target = Profile.objects.get(id=pk)
+	user = Profile.objects.get(id=request.user.id)
 	pattern = re.compile('[A-Za-z0-9]+@')
-	followList = pattern.findall(user1.followList)
-	followList = [i.rstrip('@') for i in followList]
+	profile_last = Profile.objects.order_by('-dateCreated')[:4]
+	followerList = pattern.findall(target.followerList)
+	followerList = [i.rstrip('@') for i in followerList]
+	user = Profile.objects.get(id=request.user.id)
+
+	profile = Profile.objects.get(id=request.user.id)
+	post = profile.post_set.order_by('-dateCreated')[:1000]
+	followerList.remove('0')
+	context = { 
+		'profile':profile,
+		'target':target,
+		'post':post,
+		'list':followerList,
+		'target':target,
+		'profile_last':profile_last,
+	}
+	return render(request, 'accounts/followerList1.html',context)
+
+
+
+@login_required(login_url='login')
+def profilePage(request, username):
+	profile = Profile.objects.get(username=username)
+	user1 = Profile.objects.get(id=request.user.id)
+	profile_last = Profile.objects.order_by('-dateCreated')[:4]
+
+	pattern = re.compile('[A-Za-z0-9]+@')
+	followingList = pattern.findall(user1.followingList)
+	followingList = [i.rstrip('@') for i in followingList]
 	post = profile.post_set.order_by('-dateCreated')[:1000]
 	paginator = Paginator(post,3)
 	page_number = request.GET.get('page')
@@ -196,7 +261,8 @@ def profilePage(request, pk):
 		d.append(int(likeList[i]))
 	context = {
 		'profile':profile,
-		'followList':followList,
+		'followList':followingList,
+		'profile_last':profile_last,
 		'post':post,
 		'n':range(1,paginator.num_pages+1),
 		'num_pages': num_pages,
@@ -232,11 +298,10 @@ def addTweet(request):
 			q.user.add(user1)
 			q.save()
 			pattern = re.compile('[A-Za-z0-9]+@')
-			followList = pattern.findall(user1.followList)
-			followList = [i.rstrip('@') for i in followList]
-			print(followList)
+			followerList = pattern.findall(user1.followerList)
+			followerList = [i.rstrip('@') for i in followerList]
 
-			for i in followList:
+			for i in followerList:
 				if i != '0':
 					d = Profile.objects.get(username=i)
 					q.user.add(d)
@@ -253,40 +318,52 @@ def followFunction(request, pk):
 	target = Profile.objects.get(id=pk)
 	user1 = Profile.objects.get(id=request.user.id)
 	pattern = re.compile('[A-Za-z0-9]+@')
-	followList = pattern.findall(user1.followList)
-	followList = [i.rstrip('@') for i in followList]
+	followingList = pattern.findall(user1.followingList)
+	followingList = [i.rstrip('@') for i in followingList]
 	try:
 		q = 1
 	except:
 		a = 1
 	else:
-		if target.username in followList:
-			followList.remove(target.username)
-			followList = '@'.join(followList)
-			followList = followList + '@' 
+		if target.username in followingList:
+			followingList.remove(target.username)
+			followingList = '@'.join(followingList)
+			followingList = followingList + '@' 
 			# d = target.post_set.all()
 			# for i in d:
 			#     user1.delete()  
-			user1.followList = followList
+			user1.followingList = followingList
 			d = target.post_set.filter(author=target)
 			for i in d:
 				i.user.remove(user1)  
-
+			pattern = re.compile('[A-Za-z0-9]+@')
+			followerList = pattern.findall(user1.followerList)
+			followerList = [i.rstrip('@') for i in followerList]
+			followerList.remove(user1.username)
+			followerList = '@'.join(followerList)
+			followerList = followerList + '@' 
 
 			user1.followings -= 1
 			user1.save()        
 			target.followers -= 1
 			target.save()
 		else:
-			followList.append(target.username)
-			followList = '@'.join(followList)
-			followList = followList + '@' 
+			followingList.append(target.username)
+			followingList = '@'.join(followingList)
+			followingList = followingList + '@' 
 			d = target.post_set.all()
 			for i in d:
 				i.user.add(user1)  
+			pattern = re.compile('[A-Za-z0-9]+@')
+			followerList = pattern.findall(user1.followerList)
+			followerList = [i.rstrip('@') for i in followerList]
+			followerList.append(user1.username)
+			followerList = '@'.join(followerList)
+			followerList = followerList + '@' 
 
 
-			user1.followList = followList
+			user1.followingList = followingList
+			target.followerList = followerList
 			user1.followings += 1
 			user1.save()        
 			target.followers += 1

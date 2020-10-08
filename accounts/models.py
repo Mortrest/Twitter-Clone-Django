@@ -12,7 +12,8 @@ class Profile(models.Model):
 
     # Inja bayad ba tavajoh be regex doros beshe defaultesh
     likeList = models.TextField(default='0x')
-    followList = models.TextField(default='0@')
+    followerList = models.TextField(default='0@')
+    followingList = models.TextField(default='0@')
     followers = models.IntegerField(default=0)
     followings = models.IntegerField(default=0)
     #profilePic = models.ImageField()
